@@ -405,7 +405,7 @@ Item {
 
             Label {
                 width: aboutDialog.availableWidth
-                text: "All code and details are available at <a href='https://github.com/amlwwalker/got-qt'>github.com/amlwwalker/got-qt</a> or read about Wingit at <a href='https://twitter.com/amlwwalker'>twitter.com/amlwwalker</a>"
+                text: "All code and details are available at <a href='https://github.com/amlwwalker/wingit'>github.com/amlwwalker/wingit</a> or contact me at <a href='https://twitter.com/amlwwalker'>twitter.com/amlwwalker</a>"
                 wrapMode: Label.Wrap
                 font.pixelSize: 12
                 onLinkActivated: Qt.openUrlExternally(link)
