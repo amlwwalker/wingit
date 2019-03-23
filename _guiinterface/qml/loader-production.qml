@@ -36,15 +36,15 @@ Item {
                         fillMode: Image.Pad
                         horizontalAlignment: Image.AlignHCenter
                         verticalAlignment: Image.AlignVCenter
-                        source: titleLabel.text == "Files" ? "images/back.png" : "images/drawer.png"
+                        source: "images/drawer.png"
                     }
                     onClicked: {
-                        if (titleLabel.text == "Files") {
-                            titleLabel.text = "Contacts"
-                            stackView.pop()
-                        } else {
+                        // if (titleLabel.text == "Files") {
+                        //     titleLabel.text = "Contacts"
+                        //     stackView.pop()
+                        // } else {
                             drawer.open()
-                        }
+                        // }
                     }
                 }
 
