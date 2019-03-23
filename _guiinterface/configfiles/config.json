@@ -1,0 +1,13 @@
+{
+  "hotload": false,
+  "host": "app-wingit.herokuapp.com",
+  "protocol": "https://",
+  "port": "443",
+  "mode": "development",
+  "version": "0.1",
+  "author": "Alex Walker",
+  "path": "/Users/alex/.wingit/",
+  "verbose": true,
+  "loadFrom": "~/",
+  "date": "02-04-2018"
+}

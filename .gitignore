@@ -1,0 +1,18 @@
+#directories
+deploy/
+
+#file extensions
+*.o
+*.qmlc
+*.cpp
+*.h
+*.qrc
+*-packr.go
+
+#file prefixes
+moc*.*
+rcc*.*
+
+#binary files
+./got-qt
+./cuiinterface/cuiinterface
