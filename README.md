@@ -69,7 +69,7 @@ If you are interested in encryption, then this project may be of interest to you
 
 ### Development
 
-- If you would like to help develop the application, then I suggest starting [with this repository](github.com/amlwwalker/got-qt). I put this together as a set of instructions on getting started building desktop/native apps using Go and QML. Once you can get that running you are ready to help develop this application.
+- If you would like to help develop the application, then I suggest starting [with this repository](https://github.com/amlwwalker/got-qt). I put this together as a set of instructions on getting started building desktop/native apps using Go and QML. Once you can get that running you are ready to help develop this application.
 - Although I will work to keep code clean, as I say, the goal is to get it working and see if there is a community of interest. If there is, then clean code will become more and more of a priority (beyond it being clean enough for me to read). Documentation would come as part of this too. I say all this, however its not very complex, so it shouldn't be too hard to get your teeth into if you have experience with Go or QML. I'm here to answer questions aswell.
 
 ### COMPILATION
