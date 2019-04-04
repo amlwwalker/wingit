@@ -4,6 +4,7 @@
   "protocol": "https://",
   "port": "443",
   "mode": "development",
+  "hardware": "metal",
   "version": "0.1",
   "author": "Alex Walker",
   "path": "/Users/alex/.wingit/",

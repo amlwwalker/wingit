@@ -99,26 +99,27 @@ Pane {
             }
             Button {
                 id: disableSyncButton
-                text: "Auto Sync On (disable)"
+                text: QmlBridge.toggleState() ? "Auto Sync On (disable)" : "Auto Sync Off (enable)"
                 Layout.fillWidth: true
                 property bool isClicked: false
-                background: Rectangle {
-                    color: "#EEEEEE"
-                    radius: 2
-                    border.color: "grey"
-                }
+                // background: Rectangle {
+                //     color: "#EEEEEE"
+                //     radius: 2
+                //     border.color: "grey"
+                // }
+                Material.background: "#BEEEFF"
                 onClicked: function() {
-                    isClicked = !isClicked
-                    console.log("disabling auto sync")
+                    // isClicked = !isClicked
+                    if (QmlBridge.toggleAutoSync()) {
+                        disableSyncButton.text = "Auto Sync Off (enable)"
+                        // console.log("sync state: ", QmlBridge.toggleAutoSync())
+                        // root.syncButtonIcon.source = "../images/FA/black/png/32/refresh.png"
+                    } else {
+                        disableSyncButton.text = "Auto Sync on (Disable)"
+                        // console.log("sync state: ", QmlBridge.toggleAutoSync())
+                    }
                 }
                 onPressedChanged: {
-                    if (isClicked) {
-                        disableSyncButton.text = "Auto Sync Off (enable)"
-                        console.log("sync state: ", QmlBridge.toggleAutoSync())
-                    } else {
-                        disableSyncButton.text = "Auto Sync On (disable)"
-                        console.log("sync state: ", QmlBridge.toggleAutoSync())
-                    }
                     if ( pressed ) {
                         disableSyncButton.background.color = "#DDDDDD"
                     } else {

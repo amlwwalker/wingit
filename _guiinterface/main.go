@@ -28,13 +28,20 @@ func LoadConfiguration() (error, utils.Config) {
 	}
 }
 func main() {
+
+	//load the config before anything else
+	_, config := LoadConfiguration()
+
+	core.QCoreApplication_SetOrganizationName("WingIt") //needed to fix an QML Settings issue on windows
+	if config.Hardware == "virtualised" {               //check config for virtualisation state (manually set)
+		quick.QQuickWindow_SetSceneGraphBackend(quick.QSGRendererInterface__Software) //needed to get the application working on VMs when using the windows docker images
+	}
 	//0. set any required env vars for qt
-	os.Setenv("QT_QUICK_CONTROLS_STYLE", "material") //set style to material
+	// os.Setenv("QT_QUICK_CONTROLS_STYLE", "Material") //set style to material. Broken in QtQuick.Controls 2
 	//1. the hotloader needs a path to the qml files highest directory
 	// change this if you are working elsewhere
 	var topLevel = filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "amlwwalker", "wingit", "_guiinterface", "qml")
 
-	_, config := LoadConfiguration()
 	//2. load the configuration file
 	fmt.Println("real config: ", config)
 	//3. Create a bridge to the frontend
@@ -43,7 +50,8 @@ func main() {
 	core.QCoreApplication_SetAttribute(core.Qt__AA_EnableHighDpiScaling, true)
 
 	//4. Configure the qml binding and create an application
-	widgets.NewQApplication(len(os.Args), os.Args)
+	app := widgets.NewQApplication(len(os.Args), os.Args)
+	app.SetQuitOnLastWindowClosed(false) //stop the app being killed when the window is closed. Different to disabling the buttons
 
 	//5. configure the bridge and the systray
 	qmlBridge.ConfigureBridge(config)
@@ -88,12 +96,18 @@ func main() {
 	view.SetResizeMode(quick.QQuickView__SizeRootObjectToView)
 	qmlBridge.business.CONTROLLER.StoreStatusMessage("resizing and show off components", 1)
 
-	// view.SetFlags(core.Qt__WindowTitleHint | core.Qt__CustomizeWindowHint)
-	view.SetFlags(core.Qt__WindowTitleHint | core.Qt__CustomizeWindowHint | core.Qt__WindowMinimizeButtonHint)
-	// view.SetFlags(core.Qt__MSWindowsFixedSizeDialogHint)
+	//you can disable the close buttons etc, with the hints
+	// view.SetFlags(core.Qt__WindowTitleHint | core.Qt__CustomizeWindowHint | core.Qt__WindowMinimizeButtonHint)
+
 	//6. Complete setup, and start the UI
+	//i think there is an 'in one go' way of doing this, but _meh_...
 	view.SetMaximumWidth(view.Width())
-	// view.SetFixedSize(view.width(), view.height())
+	view.SetMinimumWidth(view.Width())
+
+	view.SetMaximumHeight(view.Height())
+	view.SetMinimumHeight(view.Height())
+
+	//configuring the buttons on the systray, requires the view, so passing it from here
 	qmlBridge.business.systray.build(func(bool) {
 		fmt.Println("show view from systray")
 		//could do a check here, but at the moment just do both
@@ -101,6 +115,14 @@ func main() {
 		view.Raise()
 		//show if minimized
 		view.Show()
+	})
+
+	//when the dock icon is clicked, show the view
+	app.ConnectEvent(func(e *core.QEvent) bool {
+		if e.Type() == core.QEvent__ApplicationActivate {
+			view.Show()
+		}
+		return app.EventDefault(e)
 	})
 	view.Show()
 

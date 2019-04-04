@@ -244,6 +244,7 @@ func (b *BusinessInterface) searchForMatches(regex string, informant func(float6
 	}()
 }
 
+//example
 //the interface needs to know how to inform the front end on progress
 //so takes a function that takes a value that the front end will use
 func (b *BusinessInterface) startAsynchronousRoutine(informant func(float64, bool)) {

@@ -111,11 +111,7 @@ Pane {
             id: searchButton
             text: "Search"
             Layout.fillWidth: true
-            background: Rectangle {
-                color: "#EEEEEE"
-                radius: 2
-                border.color: "grey"
-            }
+            Material.background: "#BEEEFF"
             onClicked: function() {
                 footerLabel.text = "searching for " + searchContactField.text
                 QmlBridge.searchFor(searchContactField.text)

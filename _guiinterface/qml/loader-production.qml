@@ -1,7 +1,7 @@
 import QtQuick 2.6
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.0
+import QtQuick.Controls.Material 2.1
 import QtQuick.Controls.Universal 2.0
 import Qt.labs.settings 1.0
 import "elements"
@@ -14,14 +14,16 @@ Item {
         id: settings
         property string style: "Default"
     }
-
+    // Material.theme: Material.Dark
     ColumnLayout {
         width: parent.width
         anchors.fill: parent
         ToolBar {
             id: toolbar
-            Material.foreground: "white"
-            Material.background: Material.BlueGrey
+            // Material.foreground: "white"
+            // Material.background: Material.Pink
+            // Material.theme: Material.Li
+            // Material.accent: Material.Pink
              z: 100
             anchors.left: parent.left
             anchors.right: parent.right
@@ -59,15 +61,18 @@ Item {
                 }
                 ToolButton {
                     contentItem: Image {
+                        id: syncButtonIcon
                         fillMode: Image.Pad
                         horizontalAlignment: Image.AlignHCenter
                         verticalAlignment: Image.AlignVCenter
-                        source: "images/FA/teal/png/32/refresh.png"
+                        source: "images/FA/black/png/32/refresh.png"
                     }
                     ToolTip.timeout: 5000
                     ToolTip.visible: hovered
                     ToolTip.text: "Click to check for new files"
                     onClicked: {
+                        globalToast.open()
+                        globalToast.start("manually syncing files")
                         QmlBridge.syncFiles()
                     }
                 }
@@ -94,8 +99,8 @@ Item {
 
         ToolBar {
             id: footer
-            Material.foreground: "white"
-            Material.background: Material.BlueGrey
+            // Material.foreground: "white"
+            // Material.background: Material.BlueGrey
              z: 100
             anchors.left: parent.left
             anchors.right: parent.right
@@ -133,7 +138,7 @@ Item {
                     z: 100
                     width: parent.width
                     anchors.horizontalCenter: parent.horizontalCenter
-                    Material.accent: Material.White
+                    // Material.accent: Material.White
                 }
 
                 Connections {
@@ -166,6 +171,7 @@ Item {
                         //and redirect them to the contacts page
                         // console.log("user --", QmlBridge.QmlUser.email)
                         drawerReveal.visible = true
+                        optionsMenu.visible = true
                         loginButton.visible = false
                         homePageLabel.text = "Now head to your contacts to get started!"
                         homePageLabel.visible = true
@@ -177,6 +183,7 @@ Item {
                     onSignalLogout: {
                         //hide menus
                         drawerReveal.visible = false
+                        optionsMenu.visible = false
                         stackView.push("qrc:/qml/pages/_loginPage.qml");
                         // usern.text = ""
                     }
@@ -198,6 +205,7 @@ Item {
                             text: "Account"
                             onTriggered: {
                                 titleLabel.text = "Account/Settings"
+                                console.log("globalToast: ", globalToast) 
                                 stackView.push("qrc:/qml/pages/_accountPage.qml");
                             }
                         }

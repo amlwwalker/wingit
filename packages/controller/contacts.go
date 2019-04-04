@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"fmt"
 	"errors"
-    utils "github.com/amlwwalker/wingit/packages/utils"
+	"fmt"
+
+	utils "github.com/amlwwalker/wingit/packages/utils"
 )
 
 func (c *CONTROLLER) SearchForContact(searchQuery string) ([]Person, error) {
@@ -18,10 +19,10 @@ func (c *CONTROLLER) SearchForContact(searchQuery string) ([]Person, error) {
 	if keys, err := c.SERVER.GetKey(searchQuery, c.User.ApiKey); err != nil {
 		return []Person{}, err
 	} else {
-        err := c.CRYPTO.SavePublicKeys(keys)
-        if err != nil {
-            c.Logger("Error saving the public keys" + err.Error())
-        }
+		err := c.CRYPTO.SavePublicKeys(keys) //TODO: This should really only save keys for contacts they want, not all!
+		if err != nil {
+			c.Logger("Error saving the public keys" + err.Error())
+		}
 		for _, v := range keys {
 			var tmp Person
 			tmp.Name = v.UserID
@@ -42,7 +43,7 @@ func (c *CONTROLLER) AddFileToContact(sender string, file utils.File) error {
 		return errors.New("No logged in user")
 	}
 	if _, ok := c.Contacts.People[sender]; !ok {
-	    //do something here
+		//do something here
 		var p Person
 		p.Name = sender //don't have a name at this time
 		p.UserId = sender
@@ -51,10 +52,10 @@ func (c *CONTROLLER) AddFileToContact(sender string, file utils.File) error {
 		if keys, err := c.SERVER.GetKey(sender, c.User.ApiKey); err != nil {
 			c.Logger("Couldn't get key for " + sender + " " + err.Error())
 		} else {
-	        err := c.CRYPTO.SavePublicKeys(keys)
-	        if err != nil {
-	            c.Logger("Error saving the public keys" + err.Error())
-	        }
+			err := c.CRYPTO.SavePublicKeys(keys)
+			if err != nil {
+				c.Logger("Error saving the public keys" + err.Error())
+			}
 			c.AddContactToList(&p)
 
 		}
@@ -81,7 +82,7 @@ func (c *CONTROLLER) AddFileToContact(sender string, file utils.File) error {
 func (c *CONTROLLER) SyncPeople() (map[string]*Person, error) {
 	if c.User.ApiKey == "" {
 		//there is no logged in user.
-		return  map[string]*Person{}, errors.New("No logged in user")
+		return map[string]*Person{}, errors.New("No logged in user")
 	}
 	//retrieve from DB and store here in model
 	people, err := c.RetrieveAllPeople(c.User.Id)
@@ -104,7 +105,7 @@ func (c *CONTROLLER) SyncPeople() (map[string]*Person, error) {
 		//but we are pointing to the memory location
 		//so they all end up at the same memory location
 		//which means we have to point to the original data
-	    c.Contacts.People[people[k].UserId] = &people[k]
+		c.Contacts.People[people[k].UserId] = &people[k]
 		// names = append(names, v.UserId)
 	}
 	fmt.Println("people now are: ", c.Contacts.People)
@@ -120,22 +121,22 @@ func (c *CONTROLLER) CreatePersonFromIdentifier(identifier string) *Person {
 }
 func (c *CONTROLLER) AddContactToList(p *Person) {
 
-    //first create a file owned by the sender
-    // var f File
-    // f.FileName = fileNameDec
-    // f.FileNameEnc = fileNameEnc
+	//first create a file owned by the sender
+	// var f File
+	// f.FileName = fileNameDec
+	// f.FileNameEnc = fileNameEnc
 
-    // //the create the sender who owns the files
-    // var p Person
-    // p.Name = contactName
-    // p.Files = append(p.Files, f)
-    // p.Len = len(p.Files)
+	// //the create the sender who owns the files
+	// var p Person
+	// p.Name = contactName
+	// p.Files = append(p.Files, f)
+	// p.Len = len(p.Files)
 
-    //finally attach them to the ctrl object to send the the frontend
-    c.Contacts.People[p.UserId] = p//append(c.Contacts.People, p)
-    c.Contacts.Len = len(c.Contacts.People)
-    c.StorePerson(c.User.Id, p)
-    // fmt.Println(ctrl.Contacts.People)
-    // qml.Changed(ctrl, &ctrl.Contacts)
+	//finally attach them to the ctrl object to send the the frontend
+	c.Contacts.People[p.UserId] = p //append(c.Contacts.People, p)
+	c.Contacts.Len = len(c.Contacts.People)
+	c.StorePerson(c.User.Id, p)
+	// fmt.Println(ctrl.Contacts.People)
+	// qml.Changed(ctrl, &ctrl.Contacts)
 
 }

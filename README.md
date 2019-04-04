@@ -134,6 +134,7 @@ Below is the flow diagram on how files are encrypted and sent to the server. The
 - [] HMAC is playing up, haven't looked into this yet. Doesn't affect functionality, just check is failing so no assurance that the sender has seen the content
 - [-] With no internet connection, currently crashes if can't upload, suspect same on download? Need timeout
 - [-] Still not changing pages correctly, esp around the account and about pages which seem to stop Contacts being able to 're show' itself. I suspect I have lost the edit where if its the current page, don't do anything - check for that and remove it
+- [] When user doesn't exist on server can still login locally if old files locally
 
 ## Functionality
 

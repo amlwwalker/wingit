@@ -14,7 +14,6 @@ Pane {
             text: labelText
             
             width: parent.width
-            Material.foreground: Material.BlueGrey
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
@@ -42,6 +41,23 @@ Pane {
             bottomPadding: 0
             horizontalAlignment: Qt.AlignHLeft
             text: "These are files you have downloaded. <br><ul><li>Click on one to open it</li><li>Files are stored at <a href='~/.wingit/downloads/'>~/.wingit/downloads/</a></li></ul>"
+        }
+        Button {
+            id: searchButton
+            text: "Open downloads folder"
+            Layout.fillWidth: true
+            // horizontalAlignment: Qt.AlignHLeft
+            // background: Rectangle {
+            //     // color: "#EEEEEE"
+            //     radius: 2
+            //     // border.color: "grey"
+            // }
+            Material.background: "#BEEEFF"
+            onClicked: function() {
+                globalToast.open()
+                globalToast.start("opening downloads folder")
+                QmlBridge.openDowloadsDirectory()
+            }
         }
         ListView {
             id: listView
@@ -82,22 +98,6 @@ Pane {
                         value: false
                     }
                 }
-            }
-        }
-        Button {
-            id: searchButton
-            text: "Open downloads folder"
-            Layout.fillWidth: true
-            // horizontalAlignment: Qt.AlignHLeft
-            background: Rectangle {
-                color: "#EEEEEE"
-                radius: 2
-                border.color: "grey"
-            }
-            onClicked: function() {
-                globalToast.open()
-                globalToast.start("opening downloads folder")
-                QmlBridge.openDowloadsDirectory()
             }
         }
     }

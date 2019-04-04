@@ -58,6 +58,7 @@ type QmlBridge struct {
 	_ func(regex string)                   `slot:"searchFor"`
 	_ func()                               `slot:"checkForUser"`
 	_ func() bool                          `slot:"toggleAutoSync"`
+	_ func() bool                          `slot:"toggleState"`
 	_ func(title, message string)          `slot:"createNotification"`
 	_ func(pendingUser, fileUrl string)    `slot:"updatePendingUpload"`
 	_ func(searchResult string, index int) `slot:"addResultToContacts"`
@@ -95,6 +96,9 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 
 	q.ConnectToggleAutoSync(func() bool {
 		q.TickerEnabled = !q.TickerEnabled
+		return q.TickerEnabled
+	})
+	q.ConnectToggleState(func() bool {
 		return q.TickerEnabled
 	})
 	//2. Configure signals

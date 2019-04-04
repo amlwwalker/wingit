@@ -17,6 +17,7 @@ type Config struct {
 	Path     string `json:"path"`
 	Date     string `json:"date"`
 	Mode     string `json:"mode"`
+	Hardware string `json:"hardware"`
 	Host     string `json:"host"`
 	Protocol string `json:"protocol"`
 	Version  string `json:"version"`
