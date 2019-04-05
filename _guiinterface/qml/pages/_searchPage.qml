@@ -40,13 +40,13 @@ Pane {
                     Text {
                         text: labelText
                         font.pixelSize: 15
-                        color: "#607D8B"
+                        // color: "#607D8B"
                     }
                     Row {
                         spacing: 5
                         Repeater {
                             model: labelText
-                            Text { text: labelText; color: "#607D8B" }
+                            Text { text: labelText; }
                         }
                     }
                 }
@@ -111,7 +111,7 @@ Pane {
             id: searchButton
             text: "Search"
             Layout.fillWidth: true
-            Material.background: "#BEEEFF"
+            // Material.background: "#BEEEFF"
             onClicked: function() {
                 footerLabel.text = "searching for " + searchContactField.text
                 QmlBridge.searchFor(searchContactField.text)

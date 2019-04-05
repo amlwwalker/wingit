@@ -52,7 +52,7 @@ Pane {
             //     radius: 2
             //     // border.color: "grey"
             // }
-            Material.background: "#BEEEFF"
+            // Material.background: "#BEEEFF"
             onClicked: function() {
                 globalToast.open()
                 globalToast.start("opening downloads folder")

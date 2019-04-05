@@ -107,7 +107,7 @@ Pane {
                 //     radius: 2
                 //     border.color: "grey"
                 // }
-                Material.background: "#BEEEFF"
+                // Material.background: "#BEEEFF"
                 onClicked: function() {
                     // isClicked = !isClicked
                     if (QmlBridge.toggleAutoSync()) {

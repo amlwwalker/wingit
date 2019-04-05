@@ -50,13 +50,13 @@ Pane {
                     Text {
                         text: labelText
                         font.pixelSize: 15
-                        color: "#607D8B"
+                        // color: "#607D8B"
                     }
                     Row {
                         spacing: 5
                         Repeater {
                             model: labelText
-                            Text { text: labelText; color: "#607D8B" }
+                            Text { text: labelText; }
                         }
                     }
                 }
@@ -72,7 +72,7 @@ Pane {
                     anchors.verticalCenter: parent.verticalCenter
                     text: fC + " file" + (fC == 1 ? "" : "s")
                     font.pixelSize: 15
-                    color: "#607D8B"
+                    // color: "#607D8B"
                 }
                 Image {
                     id: uploadImage
@@ -163,7 +163,7 @@ Pane {
             bottomPadding: 0
             topPadding: 0
             horizontalAlignment: Qt.AlignHLeft
-            text: "These are your contacts. <br><ul><li>Left click to see files from them</li><li>Right click to choose a file to send them</li><li>You can also drag a file onto a contact to send it to them.</li></ul>"
+            text: "These are your contacts. <br><ul><li>Left click to see files from them</li><li>Click the Arrow to choose a file to send to them</li><li>You can also drag a file onto a contact to send it to them.</li></ul>"
         }
         //Button {
         //    id: button

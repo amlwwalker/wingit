@@ -16,7 +16,7 @@ Pane {
             
             Text {
                 text: prunedText
-                color: "#607D8B"
+                // color: "#607D8B"
                 anchors.verticalCenter: parent.verticalCenter
             }
             MouseArea {
@@ -42,7 +42,7 @@ Pane {
                     id: infoText
                     text: (labelFileSize / 1024 / 1024).toFixed(2) + " MB"
                     anchors.centerIn: parent
-                    color: "#607D8B"
+                    // color: "#607D8B"
                 }
             }
         }
