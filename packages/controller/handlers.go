@@ -111,32 +111,32 @@ func (c *CONTROLLER) RetrieveFilesForUser() error {
 
 } // end of OAuth2Callback
 
-func (c *CONTROLLER) RetrieveAllKeys() error {
-	if c.User.ApiKey == "" {
-		//there is no logged in user.
-		return errors.New("No logged in user")
-	}
+// func (c *CONTROLLER) RetrieveAllKeys() error {
+// 	if c.User.ApiKey == "" {
+// 		//there is no logged in user.
+// 		return errors.New("No logged in user")
+// 	}
 
-	keys, err := c.SERVER.GetKeys(c.User.ApiKey) // Returns an []utils.KeyServer
-	// Error handling for the server request.
-	if err != nil {
-		c.Logger("Error fetching the keys" + err.Error())
-	} else if len(keys) == 0 {
-		utils.PrintError("No keys found")
-	} else {
-		for _, k := range keys {
-			var p Person
-			p.Name = k.UserID //don't have a name at this time
-			p.UserId = k.UserID
-			p.Len = len(p.Files)
-			p.KeyId = k.ID
+// 	keys, err := c.SERVER.GetKeys(c.User.ApiKey) // Returns an []utils.KeyServer
+// 	// Error handling for the server request.
+// 	if err != nil {
+// 		c.Logger("Error fetching the keys" + err.Error())
+// 	} else if len(keys) == 0 {
+// 		utils.PrintError("No keys found")
+// 	} else {
+// 		for _, k := range keys {
+// 			var p Person
+// 			p.Name = k.UserID //don't have a name at this time
+// 			p.UserId = k.UserID
+// 			p.Len = len(p.Files)
+// 			p.KeyId = k.ID
 
-			c.AddContactToList(&p)
-		}
-	}
-	return nil
+// 			c.AddContactToList(&p)
+// 		}
+// 	}
+// 	return nil
 
-} // end of OAuth2Callback
+// } // end of OAuth2Callback
 
 // ============================================================================================================================
 

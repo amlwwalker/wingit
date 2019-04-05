@@ -90,17 +90,18 @@ Pane {
             horizontalAlignment: Qt.AlignHCenter
             padding: 20
             topPadding: 0
-            text: "Search for new contacts here. Click on a search result to add them to your contacts"
+            text: "Search for new contacts by searching the prefix to their email (anything before the '@'). Search requires atleast 5 characters. Click on a search result to add them to your contacts"
         }
         TextField {
             id: searchContactField
             Layout.fillWidth: true
-            placeholderText: "James Bond"
+            placeholderText: "find a contact..."
             horizontalAlignment: Qt.AlignHCenter
             Keys.onReturnPressed: {
+                QmlBridge.searchFor(searchContactField.text)
                 console.log("the user is searching for " + searchContactField.text)
-                footerLabel.text = "searching for " + searchContactField.text
                 searchContactField.text = ""
+                searchContactField.placeholderText = "searching...."
             }
             background: Rectangle {
                 border.color: "grey"
