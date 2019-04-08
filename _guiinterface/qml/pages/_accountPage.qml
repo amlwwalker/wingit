@@ -145,8 +145,8 @@ Pane {
                 clip: true
                 spacing: 2
                 model: ListModel {
-                    ListElement { title: "Retrieve Files"; url: "https://app-wingit.herokuapp.com/files/list?id_token=" }
-                    ListElement { title: "Retrieve Keys"; url: "https://app-wingit.herokuapp.com/keys/retrieve?id_token=" }
+                    ListElement { title: "Retrieve Files"; url: "https://www.getwingit.app/files/list?id_token=" }
+                    ListElement { title: "Retrieve Keys"; url: "https://www.getwingit.app/keys/retrieve?id_token=" }
                 }
 
                 section.property: "type"

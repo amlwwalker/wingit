@@ -1,6 +1,6 @@
 {
   "hotload": false,
-  "host": "app-wingit.herokuapp.com",
+  "host": "www.getwingit.app",
   "protocol": "https://",
   "port": "443",
   "mode": "development",

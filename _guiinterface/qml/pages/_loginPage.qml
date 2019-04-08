@@ -39,7 +39,7 @@ Pane {
             horizontalAlignment: Qt.AlignHCenter
             padding: 20
             topPadding: 0
-            text: "Use the access key you were given when you created an account, or retrieve your key at <a href='https://app-wingit.herokuapp.com/downloads/page'>Wingit</a>"
+            text: "Use the access key you were given when you created an account, or retrieve your key at <a href='https://www.getwingit.app/downloads/page'>Wingit</a>"
             onLinkActivated: Qt.openUrlExternally(link)
         }
         TextField {

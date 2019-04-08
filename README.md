@@ -1,6 +1,6 @@
 # Wingit
 
-[WingIt](https://app-wingit.herokuapp.com/)
+[WingIt](https://www.getwingit.app/)
 
 ### Installing
 
