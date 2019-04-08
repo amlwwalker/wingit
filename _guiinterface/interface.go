@@ -17,6 +17,7 @@ type QmlUser struct {
 
 	_ string `property:"name"`
 	_ string `property:"email"`
+	_ string `property:"service"`
 	_ string `property:"picture"`
 	_ string `property:"apiKey"`
 }
@@ -204,27 +205,15 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 			return
 		}
 
-		fmt.Println("Synchronising with server on auto login")
-		q.business.SynchronizeWithServer(q.SetMessage)
-		// q.QmlUser = q.business.CONTROLLER.User
-		// q.QmlUser
-
-		/*
-			type User struct {
-				Id      string `"json":"user_id"`
-				Email   string `"json":"email"`
-				Name    string `"json":"name"`
-				Picture string `"json":"picture"`
-				Locale  string `"json":"locale"`
-				ApiKey  string `"json":"-"`
-			}
-
-		*/
+		//sets the user on the accounts page on the front end
 		q.User.SetName(q.business.CONTROLLER.User.Name)
 		q.User.SetEmail(q.business.CONTROLLER.User.Email)
+		q.User.SetService(q.business.CONTROLLER.User.Service) //authentication mechanism
 		q.User.SetPicture(q.business.CONTROLLER.User.Picture)
 		q.User.SetApiKey(q.business.CONTROLLER.User.ApiKey)
 
+		//checks for any files for this user
+		q.business.SynchronizeWithServer(q.SetMessage)
 		q.TickerEnabled = true
 	})
 	q.ConnectLoginUser(func(apiKey string) {
@@ -246,7 +235,14 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 			if err := controller.CreateUserContactBucket(u.Id, q.business.CONTROLLER.Db); err != nil {
 				fmt.Println("could not create a contact bucket for the user: ", err)
 			}
-			fmt.Println("Synchronising with server now logged in")
+			//sets the user on the accounts page on the front end
+			q.User.SetName(u.Name)
+			q.User.SetEmail(u.Email)
+			q.User.SetService(u.Service) //authentication mechanism
+			q.User.SetPicture(u.Picture)
+			q.User.SetApiKey(u.ApiKey)
+
+			//checks for any files for this user
 			q.business.SynchronizeWithServer(q.SetMessage)
 			q.TickerEnabled = true
 		}

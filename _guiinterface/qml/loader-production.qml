@@ -272,8 +272,6 @@ Item {
                     anchors.right: parent.right
                     onClicked: function() {
                     titleLabel.text = "Login"
-                    globalToast.open()
-                    globalToast.start("Logging In")
                     stackView.push("qrc:/qml/pages/_loginPage.qml");
                     }
                     //attempt a login when the page is loaded

@@ -43,6 +43,7 @@ type User struct {
 	Picture string `"json":"picture"`
 	Locale  string `"json":"locale"`
 	ApiKey  string `"json":"-"`
+	Service string `"json":"service"`
 }
 
 type SearchResults struct {

@@ -75,6 +75,18 @@ Pane {
                 }
                 Row {
                     Text {
+                        text: "Service: "
+                        font.bold: true
+                        rightPadding: 10
+                    }
+                    TextEdit {
+                        text:QmlUser.service
+                        selectByMouse: true
+                        readOnly: true
+                    }
+                }
+                Row {
+                    Text {
                         text: "API Key: "
                         font.bold: true
                         rightPadding: 10

@@ -110,7 +110,7 @@ func (srv *Server) PostFile(fileEnc utils.File, idToken string) (string, string,
 	var str string
 
 	if srv.Verbose {
-		srv.Logger("Attempting the post file " + fileEnc.FileNameEnc + " to the server...")
+		srv.Logger("Attempting to post file " + fileEnc.FileNameEnc + " to the server...")
 	}
 
 	payloadJSON, err := json.Marshal(fileEnc)
