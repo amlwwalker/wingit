@@ -416,6 +416,27 @@ Item {
                 font.pixelSize: 12
                 onLinkActivated: Qt.openUrlExternally(link)
             }
+            Label {
+                width: aboutDialog.availableWidth
+                text: "Share on <a href='https://www.linkedin.com/shareArticle?mini=true&url=https%3A//www.getwingit.app&title=The%20easiest%20way%20to%20securely%20share%20files&summary=Email%20is%20not%20secure.%20End%20to%20end%20encryption%20means%20only%20you%20and%20the%20recipient%20can%20read%20the%20contents%20of%20a%20file.%20WingIt%20is%20drag%20and%20drop%20end%20to%20end%20encrypted%20file%20sharing.%20Couldnt%20be%20easier.&source='>linkedIn</a>"
+                wrapMode: Label.Wrap
+                font.pixelSize: 12
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+            Label {
+                width: aboutDialog.availableWidth
+                text: "Share on <a href='https://twitter.com/home?status=Ive%20not%20come%20across%20a%20simpler%20way%20to%20%23share%20%23files%20securely.%20End%20to%20end%20%23encryption%20should%20be%20industry%20standard%20but%20it%20just%20isnt.%20WingIt%20is%20drag%20and%20drop,%20end%20to%20end%20encrypted%20file%20sharing.%20Nothing%20simpler.%20https%3A//www.getwingit.app'>Twitter</a>"
+                wrapMode: Label.Wrap
+                font.pixelSize: 12
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+            Label {
+                width: aboutDialog.availableWidth
+                text: "Share on <a href='https://www.facebook.com/sharer/sharer.php?u=https%3A//www.getwingit.app'>Facebook</a>"
+                wrapMode: Label.Wrap
+                font.pixelSize: 12
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
         }
     }
 }
