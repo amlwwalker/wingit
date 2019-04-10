@@ -15,4 +15,5 @@ rcc*.*
 
 #binary files
 ./got-qt
+./WingIt.dmg
 ./cuiinterface/cuiinterface
