@@ -8,6 +8,8 @@ deploy/
 *.h
 *.qrc
 *-packr.go
+*.dmg
+*.DS_Store
 
 #file prefixes
 moc*.*
@@ -15,5 +17,4 @@ rcc*.*
 
 #binary files
 ./got-qt
-./WingIt.dmg
 ./cuiinterface/cuiinterface
