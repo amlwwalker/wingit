@@ -28,10 +28,11 @@ func (c *CONTROLLER) UploadFileToContact(pendingContact, pendingFile string) (st
 		if url, err := handlers.ProcessFileEncryptAndUpload(pendingFile, pendingContact, c.User.ApiKey, c.CRYPTO, c.SERVER); err != nil {
 			//if this is due to a file location failure, should clear contact out of database
 			c.Logger("uploading failed due to " + err.Error())
+			c.SERVER.UploadProgress(1.0, err)
 		} else {
 			fmt.Println("Success! File uploaded lives at ", url)
+			c.SERVER.UploadProgress(1.0, nil)
 		}
-		c.SERVER.UploadProgress(1.0)
 
 	}()
 	return "", nil

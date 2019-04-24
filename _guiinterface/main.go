@@ -79,8 +79,11 @@ func main() {
 		fmt.Println("changed:", p)
 		view.SetSource(core.NewQUrl())
 		view.Engine().ClearComponentCache()
-		view.SetSource(core.NewQUrl3(topLevel+"/loader.qml", 0))
-		if !strings.Contains(p, "/loader.qml") {
+		//using loader-production when the hotloader is on, will not be able to reload
+		//pages that are not the home page as the urls are to the qrc location (binary file)
+		//for proper front end development, set these and the location of the loader file to loader.qml
+		view.SetSource(core.NewQUrl3(topLevel+"/loader-production.qml", 0))
+		if !strings.Contains(p, "/loader-production.qml") {
 			relativePath := strings.Replace(p, topLevel+"/", "", -1)
 			qmlBridge.UpdateLoader(relativePath)
 		}
@@ -90,11 +93,12 @@ func main() {
 		fmt.Println("compiling qml into binary...")
 		view.SetSource(core.NewQUrl3("qrc:/qml/loader-production.qml", 0))
 	} else {
+		//set loader to loader.qml for full blown hotloading front end development
 		view.SetSource(core.NewQUrl3(topLevel+"/loader-production.qml", 0))
 		go qmlBridge.hotLoader.startWatcher(loader)
 	}
 	view.SetResizeMode(quick.QQuickView__SizeRootObjectToView)
-	qmlBridge.business.CONTROLLER.StoreStatusMessage("resizing and show off components", 1)
+	// qmlBridge.business.CONTROLLER.StoreStatusMessage("just a db stored log message", 1)
 
 	//you can disable the close buttons etc, with the hints
 	// view.SetFlags(core.Qt__WindowTitleHint | core.Qt__CustomizeWindowHint | core.Qt__WindowMinimizeButtonHint)

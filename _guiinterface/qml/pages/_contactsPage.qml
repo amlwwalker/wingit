@@ -107,8 +107,8 @@ Pane {
                     //pass the current user (pending user) and the file path selected
                     //not sure how to handle multiple selections at the moment
                     //as it might be passing an array...
-                    globalToast.open()
-                    globalToast.start("uploading " + fileDialog.fileUrls.toString().replace(/^.*[\\\/]/, ''))
+                    // globalToast.open()
+                    // globalToast.start("uploading " + fileDialog.fileUrls.toString().replace(/^.*[\\\/]/, ''))
                     uploadImage.visible = false
                     loadingIndicator.visible = true
                     QmlBridge.updatePendingUpload(labelText, fileDialog.fileUrls)
@@ -122,12 +122,12 @@ Pane {
                 id: drg
                 anchors.fill: parent
                 onDropped: {
-                    globalToast.open()
-                    globalToast.start("uploading " + drop.urls.toString().replace(/^.*[\\\/]/, ''))
                     uploadImage.visible = false
                     loadingIndicator.visible = true
-                    QmlBridge.updatePendingUpload(labelText, drop.urls)
+                    var uploadResponse = QmlBridge.updatePendingUpload(labelText, drop.urls)
                     uploadImage.source = "../images/FA/bluegrey/png/32/upload.png"
+                    globalToast.open()
+                    globalToast.start(uploadResponse)
                 }
                 onEntered: {
                     //change the icon

@@ -132,13 +132,15 @@ Item {
                 }
                 ProgressBar {
                     id: progressIndicator
-                    value: 0.0
+                    value: 0.7 //start at at something more than 0 to make fast downloads look like they have begun
                     indeterminate: false
                     visible: false
                     z: 100
                     width: parent.width
                     anchors.horizontalCenter: parent.horizontalCenter
-                    // Material.accent: Material.White
+                    Material.background: '#FFFFFF'
+                    Material.foreground: '#FFFFFF'
+                    Material.accent: '#FFFFFF'
                 }
 
                 Connections {
@@ -156,10 +158,10 @@ Item {
                             progressIndicator.visible = false
                         }
                     }
-                    // onPopupToast: {
-                    //     globalToast.open()
-                    //     globalToast.start("opening " + message)
-                    // }
+                    onPopupToast: {
+                        globalToast.open()
+                        globalToast.start(message)
+                    }
                     onSetMessage: {
                         console.log("message ", message)
                         footerLabel.text = message

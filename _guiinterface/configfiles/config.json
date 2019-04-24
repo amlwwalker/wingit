@@ -1,5 +1,5 @@
 {
-  "hotload": false,
+  "hotload": true,
   "host": "localhost",
   "protocol": "http://",
   "port": "8080",

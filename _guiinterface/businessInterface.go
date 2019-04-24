@@ -115,17 +115,22 @@ func (b *BusinessInterface) configureInterface(signalLogin func(string, string),
 		fmt.Println("downloaded...: ", percentage, "%")
 		if percentage > 0.98 {
 			//turning this notificaiton off now there is synchronisation
-			//b.notifier.Push("Status", "Finished downloading")
+			b.notifier.Push("Status", "Finished downloading")
 		}
 		updateProcessStatus(percentage, false)
 	}
 	//we dont know how long this will take
-	b.CONTROLLER.SERVER.UploadProgress = func(percentage float64) {
+	//it would be nice to show a percentage of upload
+	b.CONTROLLER.SERVER.UploadProgress = func(percentage float64, err error) {
 		fmt.Println("uploading...")
+		updateProcessStatus(percentage, true)
+		if err != nil {
+			b.notifier.Push("Upload Status", "Upload failed due to "+err.Error())
+			return
+		}
 		if percentage > 0.98 {
 			b.notifier.Push("Upload Status", "Upload complete")
 		}
-		updateProcessStatus(percentage, true)
 	}
 	//need front end funtion to handle once a user is authd
 	//special case requirement, as the front end will need to adapt to a login
@@ -234,7 +239,7 @@ func (b *BusinessInterface) searchForMatches(regex string, informant func(float6
 			//now these need adding to the search results
 			for _, v := range sResults {
 				//clicking on a search result adds them to the contacts
-				fmt.Println("adding result ", v.UserId)
+				fmt.Println("adding search result ", v)
 				//TODO: Only show contacts not already in your list
 				addPersonToList(v, b.sModel)
 			}

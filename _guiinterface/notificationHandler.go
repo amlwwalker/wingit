@@ -1,11 +1,12 @@
-	package main
+package main
 
 import (
+	"fmt"
+	"runtime"
+
 	"github.com/0xAX/notificator" //for desktop
 	"github.com/therecipe/qt/androidextras"
 	"github.com/therecipe/qt/core"
-	"runtime"
-	"fmt"
 )
 
 type NotificationHandler struct {
@@ -22,26 +23,27 @@ type NotificationClient struct {
 
 	_ func(string) `slot:"updateAndroidNotification"`
 }
+
 func (n *NotificationHandler) Initialise() {
 
 	n.AndroidNotifier = NewNotificationClient(nil)
 	n.AndroidNotifier.ConnectNotificationChanged(n.AndroidNotifier.updateAndroidNotification)
 	//initialise the notifiers
 	n.DesktopNotifier = notificator.New(notificator.Options{
-	    DefaultIcon: "",
-	    AppName: "WingIt",
+		DefaultIcon: "",
+		AppName:     "WingIt",
 	})
 }
 func (n *NotificationHandler) Push(title, message string) {
 
 	switch runtime.GOOS {
-		case "android":
-			//in this case, we are notifying on android
+	case "android":
+		//in this case, we are notifying on android
 		// notificationClient = NewNotificationClient(view)
 		// view.Engine().RootContext().SetContextProperty("notificationClient", notificationClient)
 		fmt.Println("setting android notification")
 		n.AndroidNotifier.SetNotification(message)
-		default:
+	default:
 		//notifying on desktop
 		n.DesktopNotifier.Push(title, message, "", notificator.UR_CRITICAL)
 	}

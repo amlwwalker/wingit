@@ -70,6 +70,7 @@ func (c *CONTROLLER) Authorize(apiKey string) (User, error) {
 
 	// Extract the id_token so that we can auth against our server
 	c.User = &userProfile
+	c.User.ApiKey = apiKey
 	fmt.Println("id token: ", c.User.ApiKey)
 
 	c.StoreUser(c.User)

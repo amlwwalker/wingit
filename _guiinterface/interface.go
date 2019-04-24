@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -56,21 +57,21 @@ type QmlBridge struct {
 
 	//requests from qml
 	//searchFor processes the searching request from the front end
-	_ func(regex string)                   `slot:"searchFor"`
-	_ func()                               `slot:"checkForUser"`
-	_ func() bool                          `slot:"toggleAutoSync"`
-	_ func() bool                          `slot:"toggleState"`
-	_ func(title, message string)          `slot:"createNotification"`
-	_ func(pendingUser, fileUrl string)    `slot:"updatePendingUpload"`
-	_ func(searchResult string, index int) `slot:"addResultToContacts"`
-	_ func(userId string)                  `slot:"updatePendingUser"`
-	_ func(fileName string)                `slot:"beginFileDownload"`
-	_ func()                               `slot:"getDownloads"`
-	_ func(path string)                    `slot:"openFile"`
-	_ func()                               `slot:"openDowloadsDirectory"`
-	_ func()                               `slot:"syncFiles"`
-	_ func(apiKey string)                  `slot:"loginUser"`
-	_ func()                               `slot:"logout"`
+	_ func(regex string)                       `slot:"searchFor"`
+	_ func()                                   `slot:"checkForUser"`
+	_ func() bool                              `slot:"toggleAutoSync"`
+	_ func() bool                              `slot:"toggleState"`
+	_ func(title, message string)              `slot:"createNotification"`
+	_ func(pendingUser, fileUrl string) string `slot:"updatePendingUpload"`
+	_ func(searchResult string, index int)     `slot:"addResultToContacts"`
+	_ func(userId string)                      `slot:"updatePendingUser"`
+	_ func(fileName string)                    `slot:"beginFileDownload"`
+	_ func()                                   `slot:"getDownloads"`
+	_ func(path string)                        `slot:"openFile"`
+	_ func()                                   `slot:"openDowloadsDirectory"`
+	_ func()                                   `slot:"syncFiles"`
+	_ func(apiKey string)                      `slot:"loginUser"`
+	_ func()                                   `slot:"logout"`
 }
 
 //setup functions to communicate between front end and back end
@@ -156,15 +157,30 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 			q.business.fModel.AddFile(f)
 		}
 	})
-	q.ConnectUpdatePendingUpload(func(pendingUser, fileUrl string) {
+	q.ConnectUpdatePendingUpload(func(pendingUser, fileUrl string) string {
+		fmt.Println("user ", q.business.CONTROLLER.User, " uploading for ", pendingUser)
+		//checks
+		if q.business.CONTROLLER.User.Username == "" {
+			fmt.Println("blocking upload as no username")
+			q.PopUpToast("Please set a username")
+			q.business.CONTROLLER.SERVER.UploadProgress(1.0, errors.New("Anonymous users cannot upload files"))
+			return "Please set a username"
+		}
+		if !q.business.CONTROLLER.User.Verified && !q.business.CONTROLLER.User.Enabled {
+			fmt.Println("blocking upload as user is anonymous")
+			q.PopUpToast("Anonymous users cannot upload files")
+			q.business.CONTROLLER.SERVER.UploadProgress(1.0, errors.New("Anonymous users cannot upload files"))
+			return "Anonymous users cannot upload files"
+		}
 		q.business.CurrentSelectedContact = pendingUser
 		q.business.PendingUpload = fileUrl
 		fmt.Println("received: ", q.business.PendingUpload)
 		fmt.Println("for: ", q.business.CurrentSelectedContact)
 		//however now we just need to upload the file to the server
 		fmt.Println("beginning upload")
-		q.business.CONTROLLER.SERVER.UploadProgress(0.0)
+		q.business.CONTROLLER.SERVER.UploadProgress(0.0, nil)
 		q.business.CONTROLLER.UploadFileToContact(pendingUser, fileUrl)
+		return "Uploading..."
 	})
 	q.ConnectBeginFileDownload(func(fileName string) {
 		fmt.Println("beginning file download")
@@ -225,7 +241,7 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 		//this function results in a callback running
 		//so that this signal doesn't end up dealing with all post auth
 		//logic
-		q.business.notifier.Push("Authentication", "Attempting Login")
+		// q.business.notifier.Push("Authentication", "Attempting Login")
 		fmt.Println("api key received: ", apiKey)
 		if u, err := q.business.CONTROLLER.Authorize(apiKey); err != nil {
 			fmt.Println("Auth failed; ", err)
@@ -237,7 +253,7 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 			}
 			//sets the user on the accounts page on the front end
 			q.User.SetName(u.Name)
-			q.User.SetUsername(u.Email)
+			q.User.SetUsername(u.Username)
 			q.User.SetService(u.Service) //authentication mechanism
 			q.User.SetPicture(u.Picture)
 			q.User.SetApiKey(u.ApiKey)
@@ -258,15 +274,19 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 		//an asynchronous response will tell the user that
 		//login was successful
 		q.business.CONTROLLER.Logout(func() {
-			fmt.Println("logout called back")
-			//in reality this calls the front end, which
-			//updates the stack view to the home page
 			//blank the user
 			fmt.Println("cleared user: ", q.business.CONTROLLER.User)
 			//need to clear current user settings out of the DB
 			// q.UserName = "" //clear for frontend
 			//be good to get user pics and store them in db
 			// q.UserPic = ""
+
+			//clear the contacts object
+			//later there should be a function to reset the controller in its entirety
+			q.business.CurrentSelectedContact = "" //clear the user that was selected
+			for k := range q.business.CONTROLLER.Contacts.People {
+				delete(q.business.CONTROLLER.Contacts.People, k)
+			}
 			//clear all front end lists
 			q.business.pModel.ClearPeople()
 			q.business.sModel.ClearPeople()

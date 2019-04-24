@@ -129,7 +129,7 @@ func (srv *Server) PostConnection(path string, data []byte, idToken string) (str
 		// srv.Logger(" ~~~ POST Response Status: ", resp.Status)
 		// srv.Logger(" ~~~ POST Response Headers: ", resp.Header)
 	}
-	srv.UploadProgress(1.0)
+	srv.UploadProgress(1.0, nil)
 	return resp.Status, respBody, nil
 
 } // end of PostConnection

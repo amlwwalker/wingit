@@ -17,7 +17,7 @@ Popup {
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     Timer {
         id: toastTimer
-        interval: 3000
+        interval: 1500
         repeat: false
         onTriggered: {
             popup.close()
