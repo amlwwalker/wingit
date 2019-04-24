@@ -16,7 +16,7 @@ type QmlUser struct {
 	core.QObject
 
 	_ string `property:"name"`
-	_ string `property:"email"`
+	_ string `property:"username"`
 	_ string `property:"service"`
 	_ string `property:"picture"`
 	_ string `property:"apiKey"`
@@ -207,7 +207,7 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 
 		//sets the user on the accounts page on the front end
 		q.User.SetName(q.business.CONTROLLER.User.Name)
-		q.User.SetEmail(q.business.CONTROLLER.User.Email)
+		q.User.SetUsername(q.business.CONTROLLER.User.Username)
 		q.User.SetService(q.business.CONTROLLER.User.Service) //authentication mechanism
 		q.User.SetPicture(q.business.CONTROLLER.User.Picture)
 		q.User.SetApiKey(q.business.CONTROLLER.User.ApiKey)
@@ -232,12 +232,12 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 		} else {
 			fmt.Println("user: ", u)
 			//at this point, we can create the users contact bucket
-			if err := controller.CreateUserContactBucket(u.Id, q.business.CONTROLLER.Db); err != nil {
+			if err := controller.CreateUserContactBucket(u.UserId.String(), q.business.CONTROLLER.Db); err != nil {
 				fmt.Println("could not create a contact bucket for the user: ", err)
 			}
 			//sets the user on the accounts page on the front end
 			q.User.SetName(u.Name)
-			q.User.SetEmail(u.Email)
+			q.User.SetUsername(u.Email)
 			q.User.SetService(u.Service) //authentication mechanism
 			q.User.SetPicture(u.Picture)
 			q.User.SetApiKey(u.ApiKey)

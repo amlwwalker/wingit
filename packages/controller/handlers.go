@@ -95,7 +95,7 @@ func (c *CONTROLLER) RetrieveFilesForUser() error {
 		c.Logger("No files found")
 	} else {
 		for _, file := range files {
-			// fmt.Printf("retrieved filename %+v\r\n", file)
+			// fmt.Printf("retrieved file %+v\r\n", file)
 			fileName, err := handlers.DecryptFileName(file.FileNameEnc, file.PasswordEnc, c.CRYPTO)
 			if err != nil {
 				c.Logger("Could not decrypt file name: " + file.FileNameEnc)

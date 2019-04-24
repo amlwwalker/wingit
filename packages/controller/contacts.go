@@ -7,7 +7,7 @@ import (
 	utils "github.com/amlwwalker/wingit/packages/utils"
 )
 
-func (c *CONTROLLER) SearchForContact(searchQuery string) ([]Person, error) {
+func (c *CONTROLLER) SearchForContacts(searchQuery string) ([]Person, error) {
 	//use the server to search for a query
 	//and return the people associated with that key
 	var people []Person
@@ -16,7 +16,7 @@ func (c *CONTROLLER) SearchForContact(searchQuery string) ([]Person, error) {
 		return []Person{}, errors.New("No logged in user")
 	}
 	fmt.Println("search query: " + searchQuery)
-	if keys, err := c.SERVER.GetKey(searchQuery, c.User.ApiKey); err != nil {
+	if keys, err := c.SERVER.GetKeys(searchQuery, c.User.ApiKey); err != nil {
 		return []Person{}, err
 	} else {
 		err := c.CRYPTO.SavePublicKeys(keys) //TODO: This should really only save keys for contacts they want, not all!
@@ -52,7 +52,7 @@ func (c *CONTROLLER) AddFileToContact(sender string, file utils.File) error {
 		if keys, err := c.SERVER.GetKey(sender, c.User.ApiKey); err != nil {
 			c.Logger("Couldn't get key for " + sender + " " + err.Error())
 		} else {
-			err := c.CRYPTO.SavePublicKeys(keys)
+			err := c.CRYPTO.SavePublicKeys([]utils.KeyServer{keys})
 			if err != nil {
 				c.Logger("Error saving the public keys" + err.Error())
 			}
@@ -85,7 +85,7 @@ func (c *CONTROLLER) SyncPeople() (map[string]*Person, error) {
 		return map[string]*Person{}, errors.New("No logged in user")
 	}
 	//retrieve from DB and store here in model
-	people, err := c.RetrieveAllPeople(c.User.Id)
+	people, err := c.RetrieveAllPeople(c.User.UserId.String())
 	if err != nil {
 		c.Logger("error retrieving people" + err.Error())
 	}
@@ -135,7 +135,7 @@ func (c *CONTROLLER) AddContactToList(p *Person) {
 	//finally attach them to the ctrl object to send the the frontend
 	c.Contacts.People[p.UserId] = p //append(c.Contacts.People, p)
 	c.Contacts.Len = len(c.Contacts.People)
-	c.StorePerson(c.User.Id, p)
+	c.StorePerson(c.User.UserId.String(), p)
 	// fmt.Println(ctrl.Contacts.People)
 	// qml.Changed(ctrl, &ctrl.Contacts)
 

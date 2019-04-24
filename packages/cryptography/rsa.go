@@ -141,7 +141,6 @@ func (c *Crypto) DecryptRSAOaep(ciphertext []byte, label []byte) ([]byte, error)
 	var md5_hash hash.Hash
 
 	md5_hash = md5.New()
-	// fmt.Println("label ", string(label), " ciphertext ", string(ciphertext), " key ", c.PrivateKey)
 	decrypted, err = rsa.DecryptOAEP(md5_hash, rand.Reader, c.PrivateKey, ciphertext, label)
 	if err != nil {
 		return nil, err

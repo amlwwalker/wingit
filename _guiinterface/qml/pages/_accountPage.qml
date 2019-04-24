@@ -63,12 +63,12 @@ Pane {
                 }
                 Row {
                     Text {
-                        text: "Email: "
+                        text: "Username: "
                         font.bold: true
                         rightPadding: 10
                     }
                     TextEdit {
-                        text:QmlUser.email
+                        text:QmlUser.username
                         selectByMouse: true
                         readOnly: true
                     }

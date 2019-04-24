@@ -228,7 +228,7 @@ func (b *BusinessInterface) searchForMatches(regex string, informant func(float6
 	//we can use the model updater above, but requires to update the cui aswell
 	b.sModel.ClearPeople()
 	go func() {
-		if sResults, err := b.CONTROLLER.SearchForContact(regex); err != nil {
+		if sResults, err := b.CONTROLLER.SearchForContacts(regex); err != nil {
 			fmt.Println("error searching for contact: ", err)
 		} else {
 			//now these need adding to the search results

@@ -185,7 +185,7 @@ func (c *UIControl) searchContact(g *gocui.Gui, v *gocui.View) error {
 		return nil
 	}
 	updateView(g, "logs", "searching for "+l+"...")
-	if people, err := c.CONTROLLER.SearchForContact(l); err != nil {
+	if people, err := c.CONTROLLER.SearchForContacts(l); err != nil {
 		updateView(g, "logs", "error for! "+l+" "+err.Error())
 	} else {
 		//just add them to the contacts

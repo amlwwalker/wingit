@@ -168,7 +168,6 @@ func (c *Crypto) loadRSAKeyPair(id string) error {
 	// Store in the struct.
 	c.PrivateKey = privateKey
 	c.PublicKey = publicKey
-
 	if c.Verbose {
 		c.Logger("Successfully loaded local key-pair files.")
 	}
@@ -252,7 +251,7 @@ func (c *Crypto) loadPrivateKey(id string) (*rsa.PrivateKey, error) {
 	if c.Verbose {
 		c.Logger("Loading private-key file...")
 	}
-
+	fmt.Println("loading private key ", c.KeyFolder+id+"-private.key")
 	privateKeyFile, err := os.Open(c.KeyFolder + id + "-private.key")
 	if err != nil {
 		c.Logger("Eror loading the private-key file" + err.Error())

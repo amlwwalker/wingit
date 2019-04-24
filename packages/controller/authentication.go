@@ -33,9 +33,9 @@ func (c *CONTROLLER) CheckForExistingUser() error {
 	} else {
 		fmt.Println("user found: ", user)
 		c.User = user
-		if c.User.Id == "" {
+		if c.User.UserId.String() == "" {
 			//no user was found, don't continue
-			fmt.Println("no user found: ", c.User.Id)
+			fmt.Println("no user found: ", c.User.UserId.String())
 			return errors.New("no user was found")
 		}
 		c.StoreStatusMessage("doing user specific setup: ", 1)
@@ -83,13 +83,13 @@ func (c *CONTROLLER) Authorize(apiKey string) (User, error) {
 } // end of authentication
 
 func (c *CONTROLLER) UserSpecificSetup(modify bool) {
-	c.StoreStatusMessage("starting setup: "+c.User.Id, 1)
-	c.CRYPTO.InitRSAKeyPair(c.User.Id)
+	c.StoreStatusMessage("starting setup: "+c.User.UserId.String(), 1)
+	c.CRYPTO.InitRSAKeyPair(c.User.UserId.String())
 	//modify ? over write keys on server or not (debug mode)
 	handlers.SyncTemporaryStorageFolder(c.SERVER, c.User.ApiKey, modify)
 
 	//confirm a user specific contact bucket has been created
-	if err := CreateUserContactBucket(c.User.Id, c.Db); err != nil {
+	if err := CreateUserContactBucket(c.User.UserId.String(), c.Db); err != nil {
 		fmt.Println("could not create a contact bucket for the user: ", err)
 	}
 }

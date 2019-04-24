@@ -110,12 +110,12 @@ func UploadEncryptedFile(fileNameBytes []byte, passwordBytes []byte, encryptedBy
 		return "", err
 	}
 	if !utils.IsFile(CRYPTO.KeyFolder + toUserId + ".pem") {
-		downloadedKeys, err := SERVER.GetKey(toUserId, idToken)
+		downloadedKey, err := SERVER.GetKey(toUserId, idToken)
 		if err != nil {
 			SERVER.Logger("Error fetching the required public-key from the server" + err.Error())
 			return "", err
 		}
-		CRYPTO.SavePublicKeys(downloadedKeys)
+		CRYPTO.SavePublicKeys([]utils.KeyServer{downloadedKey})
 	}
 	// Load recipients public key...
 	fmt.Println("loading senders public key " + toUserId + ".pem")

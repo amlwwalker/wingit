@@ -3,11 +3,14 @@
 package controller
 
 import (
+	"time"
+
 	cryptography "github.com/amlwwalker/wingit/packages/cryptography"
 	srv "github.com/amlwwalker/wingit/packages/server"
 	utils "github.com/amlwwalker/wingit/packages/utils"
 	"github.com/boltdb/bolt"
 	"github.com/gobuffalo/packr"
+	uuid "github.com/satori/go.uuid"
 )
 
 // ============================================================================================================================
@@ -36,14 +39,30 @@ type CONTROLLER struct {
 // }
 
 // Child of the CONTROLLER object
+// type User struct {
+// 	Id      string `"json":"user_id"`
+// 	Email   string `"json":"email"`
+// 	Name    string `"json":"name"`
+// 	Picture string `"json":"picture"`
+// 	Locale  string `"json":"locale"`
+// 	ApiKey  string `"json":"-"`
+// 	Service string `"json":"service"`
+// }
+
 type User struct {
-	Id      string `"json":"user_id"`
-	Email   string `"json":"email"`
-	Name    string `"json":"name"`
-	Picture string `"json":"picture"`
-	Locale  string `"json":"locale"`
-	ApiKey  string `"json":"-"`
-	Service string `"json":"service"`
+	UserId *uuid.UUID `json:"user_id"` //our id
+	// Id        string     `json:"id"`      //a services id (e.g google)
+	Username  string    `json:"username" gorm:"unique"`
+	Email     string    `json:"-" gorm:"not null;unique"`
+	Name      string    `json:"name"`
+	Picture   string    `json:"picture"`
+	Locale    string    `json:"-"`
+	ApiKey    string    `json:"apiKey"`
+	Service   string    `json:"service"`
+	CreatedAt time.Time `json:"createdAt"`
+	Verified  bool      `json:"verified"` //cannot send files just receive files if not verified (anonymous)
+	// Expiry    time.Time `json:"expiry"`
+	Enabled bool `json:"enabled"`
 }
 
 type SearchResults struct {

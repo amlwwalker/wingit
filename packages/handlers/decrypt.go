@@ -35,13 +35,13 @@ func DownloadAndDecryptFile(fileNameEnc string, pendingContact string, idToken s
 	// Check if that public key exists now... If not, download.
 	// Verify the signature.
 	if !utils.IsFile(CRYPTO.KeyFolder + pendingContact + ".pem") {
-		downloadedKeys, err := SERVER.GetKey(pendingContact, idToken)
+		downloadedKey, err := SERVER.GetKey(pendingContact, idToken)
 		if err != nil {
 			SERVER.Logger("Error fetching the required public-key from the server" + err.Error())
 			return err
 		}
 		// fmt.Println("saving key for " + pendingContact + idToken)
-		CRYPTO.SavePublicKeys(downloadedKeys)
+		CRYPTO.SavePublicKeys([]utils.KeyServer{downloadedKey})
 	}
 	fmt.Println("verifying signature with key for ", pendingContact)
 	// The key should now exist. Load the key.
@@ -129,12 +129,11 @@ func DecryptFileName(nameEncBase64 string, pwEncBase64 string, CRYPTO *cryptogra
 		CRYPTO.Logger("Error decoding the file name from base64" + err.Error())
 	}
 
-	// fmt.Println("pw64 ", pwEncBase64, " pwBytes", string(passwordEncBytes))
-	// Decrypt both.
-	// fmt.Println("password to decript pre download ", string(passwordEncBytes))
 	passwordBytes, err := CRYPTO.DecryptRSA(passwordEncBytes)
 	if err != nil {
-		CRYPTO.Logger("Error decrypting the password for the filename" + err.Error())
+		CRYPTO.Logger("Error decrypting the password for the filename " + err.Error())
+		//there should be a return here....
+		return "", err
 	}
 	fileNameBytes, err := CRYPTO.AESDecrypt(fileNameEncBytes, passwordBytes)
 	if err != nil {
