@@ -63,6 +63,7 @@ type QmlBridge struct {
 	_ func() bool                              `slot:"toggleState"`
 	_ func(title, message string)              `slot:"createNotification"`
 	_ func(pendingUser, fileUrl string) string `slot:"updatePendingUpload"`
+	_ func()                                   `slot:"deleteContact"`
 	_ func(searchResult string, index int)     `slot:"addResultToContacts"`
 	_ func(userId string)                      `slot:"updatePendingUser"`
 	_ func(fileName string)                    `slot:"beginFileDownload"`
@@ -181,6 +182,19 @@ func (q *QmlBridge) ConfigureBridge(config utils.Config) {
 		q.business.CONTROLLER.SERVER.UploadProgress(0.0, nil)
 		q.business.CONTROLLER.UploadFileToContact(pendingUser, fileUrl)
 		return "Uploading..."
+	})
+	q.ConnectDeleteContact(func() {
+		//q.business.CurrentSelectedContact
+		//so this we will have the current contacts name
+		//we have to search them
+		//contacts can do this...
+		fmt.Println("requested to delete ", q.business.CurrentSelectedContact)
+		q.business.CONTROLLER.DeleteContactFromList(q.business.CurrentSelectedContact)
+		q.business.pModel.ClearPeople()
+		for _, v := range q.business.CONTROLLER.Contacts.People {
+			// fmt.Println("after updating files, adding: ", v.UserId)
+			addPersonToList(*v, q.business.pModel)
+		}
 	})
 	q.ConnectBeginFileDownload(func(fileName string) {
 		fmt.Println("beginning file download")

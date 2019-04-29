@@ -23,7 +23,7 @@ import (
 // ============================================================================================================================
 
 // Function to make get-connection with the server. It will return the contents.
-func (srv *Server) GetConnection(path string, idToken string) ([]byte, error) {
+func (srv *Server) GetConnection(path string, idToken string, sync bool) ([]byte, error) {
 
 	var err error
 
@@ -41,7 +41,7 @@ func (srv *Server) GetConnection(path string, idToken string) ([]byte, error) {
 		return nil, err
 	} else {
 		// Create our progress reporter and pass it to be used alongside our writer
-		readerpt := &PassThru{Reader: response.Body, length: response.ContentLength}
+		readerpt := &PassThru{Reader: response.Body, length: response.ContentLength, Sync: sync}
 		//perhaps pointer is better, this is a pass
 		readerpt.DownloadProgress = srv.DownloadProgress
 

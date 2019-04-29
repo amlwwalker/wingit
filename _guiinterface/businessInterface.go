@@ -111,11 +111,21 @@ func (b *BusinessInterface) configureInterface(signalLogin func(string, string),
 
 	//setting the indicator for the download progress
 	//however will need access to the progress indicator
-	b.CONTROLLER.SERVER.DownloadProgress = func(percentage float64) {
+	b.CONTROLLER.SERVER.DownloadProgress = func(percentage float64, sync bool, err error) {
 		fmt.Println("downloaded...: ", percentage, "%")
+		if err != nil {
+			if sync {
+				b.notifier.Push("Download Status", "Sync failed due to "+err.Error())
+			} else {
+				b.notifier.Push("Download Status", "Download failed due to "+err.Error())
+			}
+			return
+		}
 		if percentage > 0.98 {
 			//turning this notificaiton off now there is synchronisation
-			b.notifier.Push("Status", "Finished downloading")
+			if !sync {
+				b.notifier.Push("Status", "Finished downloading")
+			}
 		}
 		updateProcessStatus(percentage, false)
 	}
@@ -210,7 +220,7 @@ func (b *BusinessInterface) SynchronizeWithServer(setMessage func(message string
 			b.dModel.AddFile(f)
 		}
 	}
-	setMessage("sync at " + time.Now().String())
+	// setMessage("sync at " + time.Now().String())
 	// q.PopUpToast("sync at " + time.Now().String())
 
 }

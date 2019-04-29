@@ -177,7 +177,6 @@ Item {
                         loginButton.visible = false
                         homePageLabel.text = "Now head to your contacts to get started!"
                         homePageLabel.visible = true
-                        footerLabel.text = " Welcome " + QmlUser.name + "!"
                         titleLabel.text = "Contacts"
                         // usern.text = QmlUser.email
                         stackView.push("qrc:/qml/pages/_contactsPage.qml");

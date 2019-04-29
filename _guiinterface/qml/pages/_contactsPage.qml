@@ -27,11 +27,11 @@ Pane {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
-                onClicked: {
+                onClicked: {           
                     console.log("file count: " + fC)
                     console.log("updating user: " + labelText)
                     QmlBridge.updatePendingUser(labelText)
-                    titleLabel.text = "Files"
+                    titleLabel.text = labelText
                     //this will work in production
                     //bit messy at the moment having both hot load and cold load
                     //working on same files

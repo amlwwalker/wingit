@@ -51,7 +51,7 @@ func (c *CONTROLLER) Authorize(apiKey string) (User, error) {
 
 	var userProfile User
 
-	contentBytes, err := c.SERVER.GetConnection("/user/request", apiKey)
+	contentBytes, err := c.SERVER.GetConnection("/user/request", apiKey, true)
 	if err != nil {
 		// utils.PrintErrorFull("Error retrieving the public-key from the server", err)
 		return userProfile, err

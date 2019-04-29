@@ -20,7 +20,7 @@ type Server struct {
 	Port             string
 	Verbose          bool
 	Logger           func(message string)
-	DownloadProgress func(progress float64)
+	DownloadProgress func(progress float64, sync bool, err error)
 	UploadProgress   func(progress float64, err error)
 	DownloadFolder   string
 	SyncFolder       string
@@ -38,7 +38,8 @@ type PassThru struct {
 	total            int64 // Total # of bytes transferred
 	length           int64 // Expected length
 	progress         float64
-	DownloadProgress func(progress float64)
+	Sync             bool
+	DownloadProgress func(progress float64, sync bool, err error)
 }
 
 // Read 'overrides' the underlying io.Reader's Read method.
@@ -51,7 +52,9 @@ func (pt *PassThru) Read(p []byte) (int, error) {
 		percentage := float64(pt.total) / float64(pt.length)
 		fmt.Println(percentage)
 		if percentage-pt.progress > 0.02 {
-			go pt.DownloadProgress(percentage)
+			if !pt.Sync {
+				go pt.DownloadProgress(percentage, pt.Sync, nil) //can we just pass it through
+			}
 			pt.progress = percentage
 		}
 	}

@@ -7,7 +7,6 @@ Pane {
     property var delegateComponentMap: {
         "ItemDelegate": itemDelegateComponent
     }
-
     Component {
         id: itemDelegateComponent
         ItemDelegate {
@@ -51,6 +50,30 @@ Pane {
         spacing: 10
         anchors.fill: parent
         anchors.topMargin: 20
+        RowLayout {
+            anchors.fill: parent
+            ToolButton {
+                anchors.top: parent.top
+                contentItem: Image {
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: "../images/FA/black/png/32/trash.png"
+                }
+                onClicked: function() {
+                    QmlBridge.deleteContact() //backend should know current pending contact
+                    stackView.pop();//"qrc:/qml/pages/_contactsPage.qml"
+                    stackView.push("qrc:/qml/pages/_contactsPage.qml");
+                    globalToast.open()
+                    globalToast.start("Deleted contact")
+                }
+            }
+            Label {
+                text: "Delete Contact"
+                elide: Label.ElideLeft
+                Layout.fillWidth: true
+            }
+        }
 
         Label {
             Layout.fillWidth: true
@@ -58,8 +81,9 @@ Pane {
             padding: 20
             topPadding: 0
             horizontalAlignment: Qt.AlignHLeft
-            text: "These are files waiting for you. <br><ul><li>Click on one to download it</li><li>A progress bar will appear at the bottom</li><li>Once it has finished, you can find a list of your downloaded files in the <b>Downloads</b> tab</li><li>Note, they will still appear here while they are available for download</li></ul>"
+            text: "<ul><li>Click on a file to download it</li><li>You can find your downloaded files in the <b>Downloads</b> tab</li><li>They will still appear here while they are available for download</li></ul>"
         }
+
         ListView {
             id: listView
             Layout.fillWidth: true

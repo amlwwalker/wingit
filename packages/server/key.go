@@ -30,7 +30,7 @@ func (srv *Server) GetKeys(regexSearch, idToken string) ([]utils.KeyServer, erro
 		utils.PrintStatus("Retrieving all the public-keys from the server...")
 	}
 
-	contentBytes, err := srv.GetConnection("/keys/search", idToken+"&match="+regexSearch)
+	contentBytes, err := srv.GetConnection("/keys/search", idToken+"&match="+regexSearch, true) //sync
 	if err != nil {
 		utils.PrintErrorFull("Error retrieving all the public-keys from the server", err)
 		return keys, err
@@ -63,7 +63,7 @@ func (srv *Server) GetKey(regexSearch, idToken string) (utils.KeyServer, error) 
 		// utils.PrintStatus("Retrieving public-key for `" + matchEmail + "` from the server...")
 	}
 
-	contentBytes, err := srv.GetConnection("/keys/retrieve", idToken+"&match="+regexSearch)
+	contentBytes, err := srv.GetConnection("/keys/retrieve", idToken+"&match="+regexSearch, true) //sync
 	if err != nil {
 		// utils.PrintErrorFull("Error retrieving the public-key from the server", err)
 		return key, err

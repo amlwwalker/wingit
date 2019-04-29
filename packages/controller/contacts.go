@@ -119,6 +119,15 @@ func (c *CONTROLLER) CreatePersonFromIdentifier(identifier string) *Person {
 	p.Files = make(map[string]*utils.File)
 	return &p
 }
+
+func (c *CONTROLLER) DeleteContactFromList(identifier string) {
+	fmt.Println("deleting contact ", identifier)
+	//this deletes it from the list
+	delete(c.Contacts.People, identifier) //memory deletion
+	//we now also need to delete the contact from the database
+	c.deleteContactForUser(identifier) //database deletion
+
+}
 func (c *CONTROLLER) AddContactToList(p *Person) {
 
 	//first create a file owned by the sender

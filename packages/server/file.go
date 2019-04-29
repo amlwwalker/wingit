@@ -30,7 +30,7 @@ func (srv *Server) GetFileList(idToken string) ([]utils.File, error) {
 		srv.Logger("Retrieving all files from the server...")
 	}
 
-	contentBytes, err := srv.GetConnection("/files/list", idToken)
+	contentBytes, err := srv.GetConnection("/files/list", idToken, true) //sync
 	if err != nil {
 		utils.PrintErrorFull("Error in receiving the file-list from the server", err)
 		return files, err
@@ -70,7 +70,7 @@ func (srv *Server) GetFile(fileNameEnc, idToken string) (utils.File, error) {
 		srv.Logger("Retrieving encrypted file " + fileNameEnc + " from the server...")
 	}
 
-	contentBytes, err := srv.GetConnection("/files/retrieve", idToken+"&filename="+fileNameEnc)
+	contentBytes, err := srv.GetConnection("/files/retrieve", idToken+"&filename="+fileNameEnc, false) //!sync
 	if err != nil {
 		utils.PrintErrorFull("Error retrieving the file from the server", err)
 		return fileEnc, err

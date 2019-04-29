@@ -71,6 +71,9 @@ func (c *CONTROLLER) GetDownloadedFiles() ([]utils.File, error) {
 	}
 	//just for debugging
 	for _, f := range fileList {
+		if strings.Contains(f.Name(), "DS_Store") {
+			continue
+		}
 		var tmp utils.File
 		tmp.FileName = f.Name()
 		tmp.FileSize = int(f.Size())

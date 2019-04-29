@@ -107,8 +107,8 @@ func (c *CONTROLLER) RetrievePerson(userBucket, userId string) (*Person, error) 
 	}
 	err := c.Db.View(func(tx *bolt.Tx) error {
 		var err error
-		c := tx.Bucket([]byte(CONTACTS))
-		u := c.Bucket([]byte(userBucket))
+		c := tx.Bucket([]byte(CONTACTS))  //contacts bucket
+		u := c.Bucket([]byte(userBucket)) //user within contacts bucket
 
 		k := []byte(userId)
 		err = decode(p, u.Get(k))
@@ -159,8 +159,8 @@ func (c *CONTROLLER) StorePerson(userBucket string, p *Person) error {
 	}
 	if err := c.Db.Update(func(tx *bolt.Tx) error {
 		c, _ := tx.CreateBucketIfNotExists([]byte(CONTACTS))
-		b, _ := c.CreateBucketIfNotExists([]byte(userBucket))
-		enc, err := encode(*p) //dereference the pointer
+		b, _ := c.CreateBucketIfNotExists([]byte(userBucket)) //store someone in a users contact bucket
+		enc, err := encode(*p)                                //dereference the pointer
 		if err != nil {
 			return err
 		}
@@ -173,6 +173,26 @@ func (c *CONTROLLER) StorePerson(userBucket string, p *Person) error {
 		return err
 	}
 	return nil
+}
+
+func (c *CONTROLLER) deleteContactForUser(contactIdentifier string) error {
+	if c.DBDisabled {
+		fmt.Println("not storing as cant access db")
+		return nil
+	}
+	err := c.Db.Update(func(tx *bolt.Tx) error {
+		contactBucket := tx.Bucket([]byte(CONTACTS))              //contacts bucket
+		u := contactBucket.Bucket([]byte(c.User.UserId.String())) //user within contacts bucket
+
+		k := []byte(contactIdentifier)      //what you want to delete
+		if err := u.Delete(k); err != nil { //error is json bytes so decode
+			fmt.Println("error deleting " + c.User.UserId.String() + " contact " + contactIdentifier)
+			return err
+		}
+		return nil
+	})
+	fmt.Println("returning error ", err)
+	return err
 }
 
 func (c *CONTROLLER) RetrieveUser() (*User, error) {
