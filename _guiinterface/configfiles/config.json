@@ -1,8 +1,8 @@
 {
-  "hotload": true,
-  "host": "localhost",
-  "protocol": "http://",
-  "port": "8080",
+  "hotload": false,
+  "host": "www.getwingit.app",
+  "protocol": "https://",
+  "port": "443",
   "mode": "development",
   "hardware": "metal",
   "version": "0.1",
