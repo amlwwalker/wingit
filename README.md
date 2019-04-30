@@ -1,5 +1,7 @@
 # Wingit
 
+[![Build Status](https://travis-ci.com/amlwwalker/wingit.svg?branch=master)](https://travis-ci.com/amlwwalker/wingit)
+
 ### API Key
 
 You will need to get an API key from [WingIt](https://www.getwingit.app/). Once you have logged in with Facebook or Gmail, you will receive your API key. Copy and paste this into the app at login. You're ready to go!
