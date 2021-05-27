@@ -17,7 +17,7 @@ import (
 // PUBLIC
 
 func WriteToFile(data []byte, pathToFile string) error {
-	err := ioutil.WriteFile(pathToFile, data, 777)
+	err := ioutil.WriteFile(pathToFile, data, 0777)
 	return err
 }
 
